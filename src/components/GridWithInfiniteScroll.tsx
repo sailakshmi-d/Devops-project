@@ -13,13 +13,17 @@ interface GridWithInfiniteScrollProps {
   data: PaginatedMovieResult;
   handleNext: (page: number) => void;
 }
+
 export default function GridWithInfiniteScroll({
   genre,
   data,
   handleNext,
 }: GridWithInfiniteScrollProps) {
   const intersectionRef = useRef<HTMLDivElement>(null);
-  const intersection = useIntersectionObserver(intersectionRef);
+  // Cast to RefObject<HTMLElement> to fix TypeScript error
+  const intersection = useIntersectionObserver(
+    intersectionRef as React.RefObject<HTMLElement>
+  );
 
   useEffect(() => {
     if (
@@ -42,10 +46,9 @@ export default function GridWithInfiniteScroll({
           bgcolor: "inherit",
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{ color: "text.primary", mb: 2 }}
-        >{`${genre.name} Movies`}</Typography>
+        <Typography variant="h5" sx={{ color: "text.primary", mb: 2 }}>
+          {`${genre.name} Movies`}
+        </Typography>
         <Grid container spacing={2}>
           {data.results
             .filter((v) => !!v.backdrop_path)
@@ -63,7 +66,9 @@ export default function GridWithInfiniteScroll({
             ))}
         </Grid>
       </Container>
-      <Box sx={{ display: "hidden" }} ref={intersectionRef} />
+      {/* Changed display to 'none' to properly hide the box */}
+      <Box sx={{ display: "none" }} ref={intersectionRef} />
     </>
   );
 }
+
