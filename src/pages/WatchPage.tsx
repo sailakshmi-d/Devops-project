@@ -88,7 +88,7 @@ export function Component() {
     });
   };
 
-  const handleVolumeChange: SliderUnstyledOwnProps["onChange"] = (_, value) => {
+  const handleVolumeChange: SliderProps["onChange"] = (_, value) => {
     playerRef.current?.volume((value as number) / 100);
     setPlayerState((draft) => {
       return { ...draft, volume: (value as number) / 100 };
